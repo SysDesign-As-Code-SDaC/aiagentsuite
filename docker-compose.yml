@@ -1,0 +1,339 @@
+version: '3.9'
+
+services:
+  # ====================================
+  # AI AGENT SUITE CORE COMPONENTS
+  # ====================================
+  aiagentsuite-core:
+    image: ghcr.io/your-org/aiagentsuite:latest
+    container_name: aiagentsuite-core
+    ports:
+      - "8000:8000"  # REST API
+      - "3000:3000"  # LSP Server (Expert LLM Transformation)
+      - "3001:3001"  # MCP Server (Enterprise Tools)
+    environment:
+      - AIAGENTSUITE_ENV=production
+      - AIAGENTSUITE_SECURITY_LEVEL=critical
+      - AIAGENTSUITE_CHAOS_ENABLED=true
+      - AIAGENTSUITE_VERIFICATION_ENABLED=true
+      - AIAGENTSUITE_EVENT_SOURCING_ENABLED=true
+      - LSP_PORT=3000
+      - MCP_PORT=3001
+
+      # Enterprise Features
+      - FORMAL_VERIFICATION_ENABLED=true
+      - CHAOS_ENGINEERING_ENABLED=true
+      - ZERO_TRUST_ENABLED=true
+      - SUSTAINABLE_ENGINEERING_ENABLED=true
+
+      # Monitoring & Observability
+      - PROMETHEUS_ENABLED=true
+      - JAEGER_ENABLED=true
+
+      # Enterprise Database Connections
+      - POSTGRES_HOST=aiagentsuite-db
+      - REDIS_HOST=aiagentsuite-cache
+
+    volumes:
+      - aiagentsuite_logs:/app/logs
+      - aiagentsuite_data:/app/data
+    depends_on:
+      - aiagentsuite-db
+      - aiagentsuite-cache
+      - aiagentsuite-monitoring
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      # Enterprise chaos engineering labels
+      chaos.alpha.kubernetes.io/enabled: "true"
+      chaos.alpha.kubernetes.io/intensity: "low"
+
+      # Formal verification labels
+      aiagentsuite.verification.enabled: "true"
+
+      # Cost optimization labels
+      aiagentsuite.cost.optimization: "true"
+      aiagentsuite.cost.budget: "1000"
+
+      # Sustainability labels
+      aiagentsuite.sustainability.carbon_budget: "50kg"
+      aiagentsuite.sustainability.energy_budget: "100kwh"
+
+  # ====================================
+  # ENTERPRISE DATABASE LAYER
+  # ====================================
+  aiagentsuite-db:
+    image: postgres:15-alpine
+    container_name: aiagentsuite-postgres
+    environment:
+      POSTGRES_DB: aiagentsuite
+      POSTGRES_USER: aiagentsuite
+      POSTGRES_PASSWORD: ${AIAGENTSUITE_DB_PASSWORD:-secure_password_123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aiagentsuite"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ====================================
+  # HIGH-PERFORMANCE CACHING LAYER
+  # ====================================
+  aiagentsuite-cache:
+    image: redis:7-alpine
+    container_name: aiagentsuite-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ====================================
+  # ENTERPRISE MONITORING & OBSERVABILITY
+  # ====================================
+  aiagentsuite-monitoring:
+    image: prom/prometheus:latest
+    container_name: aiagentsuite-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --web.console.templates=/etc/prometheus/consoles
+      # Enterprise-grade retention and performance
+      - --storage.tsdb.retention.time=200h
+      - --web.max-connections=512
+    restart: unless-stopped
+
+  # Jaeger for distributed tracing
+  aiagentsuite-tracing:
+    image: jaegertracing/all-in-one:latest
+    container_name: aiagentsuite-jaeger
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Accept jaeger.thrift over HTTP
+    environment:
+      - SPAN_STORAGE_TYPE=memory
+      - COLLECTOR_OTLP_ENABLED=true
+    restart: unless-stopped
+
+  # Grafana for comprehensive dashboards
+  aiagentsuite-dashboards:
+    image: grafana/grafana:latest
+    container_name: aiagentsuite-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-secure_admin_123}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - aiagentsuite-monitoring
+    restart: unless-stopped
+
+  # ====================================
+  # CHAOS ENGINEERING INFRASTRUCTURE
+  # ====================================
+  aiagentsuite-chaos:
+    image: chaos-mesh:latest
+    container_name: aiagentsuite-chaos-mesh
+    ports:
+      - "2333:2333"  # Chaos Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - CHAOS_DAEMON_PORT=31767
+    restart: unless-stopped
+
+  # ====================================
+  # FORMAL VERIFICATION COMPUTE CLUSTER
+  # ====================================
+  aiagentsuite-verification:
+    image: ghcr.io/your-org/aiagentsuite/verification:latest
+    container_name: aiagentsuite-formal-verification
+    environment:
+      # Tools: Coq, Isabelle, SPIN, TLA+, Alloy
+      - FORMAL_TOOLS_ENABLED=true
+      - COQ_ENABLED=true
+      - ISABELLE_ENABLED=true
+      - SPIN_ENABLED=true
+    volumes:
+      - verification_proofs:/app/proofs
+      - verification_models:/app/models
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+    restart: unless-stopped
+
+  # ====================================
+  # SECURITY & AUDIT LOGGING
+  # ====================================
+  aiagentsuite-security-logger:
+    image: ghcr.io/your-org/aiagentsuite/security:latest
+    container_name: aiagentsuite-security
+    environment:
+      - SECURITY_LEVEL=CRITICAL
+      - AUDIT_LOGGING=true
+      - ZERO_TRUST_ENABLED=true
+    volumes:
+      - security_audit:/app/audit_logs
+      - security_keys:/app/keys
+    restart: unless-stopped
+
+  # ====================================
+  # SUSTAINABLE ENGINEERING MONITOR
+  # ====================================
+  aiagentsuite-sustainability:
+    image: ghcr.io/your-org/aiagentsuite/sustainability:latest
+    container_name: aiagentsuite-sustainability-monitor
+    environment:
+      - CARBON_MONITORING=true
+      - ENERGY_PROFILING=true
+      - REGION=us-east-1
+      - RENEWABLE_PREFERENCE=true
+    volumes:
+      - /proc:/host/proc:ro  # For energy monitoring
+    privileged: true  # Required for energy monitoring
+    restart: unless-stopped
+
+  # ====================================
+  # LSP/MCP SERVERS FOR AI EDITOR INTEGRATION
+  # ====================================
+  aiagentsuite-lsp-server:
+    image: ghcr.io/your-org/aiagentsuite:latest
+    container_name: aiagentsuite-lsp
+    ports:
+      - "3000:3000"  # LSP port - Connect your AI editor here!
+    environment:
+      - SERVER_MODE=lsp
+      - LSP_PORT=3000
+      - FORMAL_VERIFICATION_ENABLED=true
+      - CHAOS_ENGINEERING_ENABLED=true
+      - ENTERPRISE_PATTERNS_ENABLED=true
+    command: ["python", "-m", "src.aiagentsuite.lsp.server", "--port", "3000", "--host", "0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - aiagentsuite-core
+    restart: unless-stopped
+    labels:
+      description: "LSP Server - Transforms AI editors into expert software engineers"
+
+  aiagentsuite-mcp-server:
+    image: ghcr.io/your-org/aiagentsuite:latest
+    container_name: aiagentsuite-mcp
+    ports:
+      - "3001:3001"  # MCP port - Enterprise tools for AI
+    environment:
+      - SERVER_MODE=mcp
+      - MCP_PORT=3001
+      - TOOLS_ENABLED=all
+    command: ["python", "-m", "src.aiagentsuite.mcp.server", "--port", "3001", "--host", "0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - aiagentsuite-core
+    restart: unless-stopped
+    labels:
+      description: "MCP Server - Provides enterprise tools to AI assistants"
+
+# ====================================
+# DEVELOPMENT ENVIRONMENT
+# ====================================
+  aiagentsuite-dev:
+    image: ghcr.io/your-org/aiagentsuite:dev
+    container_name: aiagentsuite-dev
+    ports:
+      - "8001:8000"  # Dev API
+      - "3002:3000"  # Dev LSP
+      - "3003:3001"  # Dev MCP
+    environment:
+      - AIAGENTSUITE_ENV=development
+      - AIAGENTSUITE_CHAOS_ENABLED=false  # Disabled in dev
+      - LSP_PORT=3000
+      - MCP_PORT=3001
+      - HOT_RELOAD=true
+    volumes:
+      - .:/app  # Mount source for development
+      - dev_logs:/app/logs
+    profiles:
+      - dev
+    restart: unless-stopped
+
+volumes:
+  # Data persistence volumes
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  verification_proofs:
+    driver: local
+  verification_models:
+    driver: local
+  security_audit:
+    driver: local
+  security_keys:
+    driver: local
+
+  # Application volumes
+  aiagentsuite_logs:
+    driver: local
+  aiagentsuite_data:
+    driver: local
+  dev_logs:
+    driver: local
+
+networks:
+  default:
+    name: aiagentsuite-network
+    driver: bridge
+
+# ====================================
+# PROFILES FOR DIFFERENT DEPLOYMENT MODES
+# ====================================
+# Default: Production enterprise deployment
+# Use: docker-compose up
+
+# Development environment:
+# Use: docker-compose --profile dev up
+
+# Minimal LSP/MCP only:
+# Use: docker-compose up aiagentsuite-lsp-server aiagentsuite-mcp-server aiagentsuite-core aiagentsuite-db aiagentsuite-cache
+
+# Chaos engineering focus:
+# Use: docker-compose up aiagentsuite-core aiagentsuite-chaos aiagentsuite-db aiagentsuite-cache
+
+# Enterprise monitoring:
+# Use: docker-compose up aiagentsuite-monitoring aiagentsuite-tracing aiagentsuite-dashboards
