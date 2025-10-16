@@ -25,7 +25,10 @@ import sentry_sdk
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+try:
+    from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+except ImportError:
+    JaegerExporter = None
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.semconv.resource import ResourceAttributes
 

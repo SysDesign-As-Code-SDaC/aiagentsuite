@@ -33,7 +33,7 @@ def init(ctx) -> None:
     async def _init() -> None:
         suite = AIAgentSuite(workspace_path)
         await suite.initialize()
-        console.print("[green]✓[/green] AI Agent Suite initialized successfully!")
+        console.print("[green]SUCCESS[/green] AI Agent Suite initialized successfully!")
 
     asyncio.run(_init())
 
@@ -175,7 +175,7 @@ def log_decision(ctx, decision: str, rationale: str, context: str) -> None:
             context_data = json.loads(context)
 
         await suite.log_decision(decision, rationale, context_data)
-        console.print(f"[green]✓[/green] Decision logged: {decision}")
+        console.print(f"[green]SUCCESS[/green] Decision logged: {decision}")
 
     asyncio.run(_log_decision())
 

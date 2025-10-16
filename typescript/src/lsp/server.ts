@@ -119,13 +119,16 @@ connection.onHover((params: TextDocumentPositionParams): Hover | null => {
   return null;
 });
 
-// Handle diagnostics
-connection.onDocumentDiagnostic(() => {
+// Handle diagnostics - using textDocument/publishDiagnostics instead
+connection.onDidChangeTextDocument((params) => {
   // Basic diagnostic implementation - could check for VDE principle violations
-  return {
-    kind: 'full',
-    items: []
-  };
+  const diagnostics: Diagnostic[] = [];
+  
+  // Publish empty diagnostics for now
+  connection.sendDiagnostics({
+    uri: params.textDocument.uri,
+    diagnostics
+  });
 });
 
 // Utility function to get word at position
