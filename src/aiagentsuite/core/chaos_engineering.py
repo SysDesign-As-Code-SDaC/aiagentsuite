@@ -172,8 +172,8 @@ class ChaosEvaluator:
 
         while time.time() - baseline_start < duration:
             # Collect current metrics
-            system_metrics = observability.metrics.collect_system_metrics()
-            app_metrics = observability.metrics.collect_application_metrics()
+            system_metrics = await observability.metrics.collect_system_metrics()
+            app_metrics = await observability.metrics.collect_application_metrics()
 
             metrics_snapshot.append({
                 "timestamp": datetime.now(),
@@ -198,8 +198,8 @@ class ChaosEvaluator:
 
         start_time = time.time()
         while time.time() - start_time < experiment.duration and not experiment.emergency_stop_triggered:
-            system_metrics = observability.metrics.collect_system_metrics()
-            app_metrics = observability.metrics.collect_application_metrics()
+            system_metrics = await observability.metrics.collect_system_metrics()
+            app_metrics = await observability.metrics.collect_application_metrics()
 
             metrics_samples.append({
                 "timestamp": datetime.now(),
@@ -287,8 +287,9 @@ class ChaosEvaluator:
             return 0.5
 
         # Calculate variance in key metrics
-        cpu_values = [sample["system"].get("cpu_percent", 0) for sample in metrics_samples]
-        memory_values = [sample["system"].get("memory_percent", 0) for sample in metrics_samples]
+        # SystemMetrics and ApplicationMetrics are Pydantic models, so we access attributes directly
+        cpu_values = [getattr(sample["system"], "cpu_percent", 0) for sample in metrics_samples]
+        memory_values = [getattr(sample["system"], "memory_percent", 0) for sample in metrics_samples]
 
         cpu_variance = self._calculate_variance(cpu_values)
         memory_variance = self._calculate_variance(memory_values)

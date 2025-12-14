@@ -6,33 +6,34 @@ Includes integration tests, end-to-end tests, and enterprise patterns testing.
 
 import asyncio
 import pytest
+import pytest_asyncio
 import time
 from datetime import datetime, timedelta
 from typing import Dict, Any, List
 from unittest.mock import Mock, AsyncMock
 
-from src.aiagentsuite.core.errors import get_global_error_handler
-from src.aiagentsuite.core.security import get_global_security_manager, SecurityLevel
-from src.aiagentsuite.core.observability import get_global_observability_manager
-from src.aiagentsuite.core.config import get_global_config_manager
-from src.aiagentsuite.core.cache import get_global_cache_manager
-from src.aiagentsuite.core.chaos_engineering import (
+from aiagentsuite.core.errors import get_global_error_handler
+from aiagentsuite.core.security import get_global_security_manager, SecurityLevel
+from aiagentsuite.core.observability import get_global_observability_manager
+from aiagentsuite.core.config import get_global_config_manager
+from aiagentsuite.core.cache import get_global_cache_manager
+from aiagentsuite.core.chaos_engineering import (
     get_global_chaos_manager, ChaosExperiment, ChaosEvent, ChaosIntensity
 )
-from src.aiagentsuite.core.formal_verification import (
+from aiagentsuite.core.formal_verification import (
     get_global_verification_manager, VerificationProperty, PropertyType
 )
-from src.aiagentsuite.core.event_sourcing import (
+from aiagentsuite.core.event_sourcing import (
     get_global_event_sourcing_manager, CreateUserCommand, UpdateUserCommand,
     EventType, DomainEvent
 )
-from src.aiagentsuite.protocols.executor import ProtocolExecutor
+from aiagentsuite.protocols.executor import ProtocolExecutor
 
 
 class TestComprehensiveSuite:
     """Comprehensive test suite covering all components."""
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def setup_managers(self):
         """Set up all managers for testing."""
         # Error handler doesn't need initialization
@@ -43,7 +44,7 @@ class TestComprehensiveSuite:
         # Enable chaos engineering for tests
         chaos_manager = get_global_chaos_manager()
         await chaos_manager.initialize()
-        from src.aiagentsuite.core.chaos_engineering import ChaosConfiguration, ChaosIntensity
+        from aiagentsuite.core.chaos_engineering import ChaosConfiguration, ChaosIntensity
         chaos_config = ChaosConfiguration(
             enabled=True,
             intensity=ChaosIntensity.HIGH,  # Allow high intensity experiments
@@ -53,7 +54,8 @@ class TestComprehensiveSuite:
         chaos_manager.configure(chaos_config)
         
         await get_global_verification_manager().initialize()
-        await get_global_event_sourcing_manager()  # Already initialized
+        # get_global_event_sourcing_manager is synchronous or already initialized
+        get_global_event_sourcing_manager()  # Already initialized
         yield
 
     @pytest.fixture
@@ -198,7 +200,7 @@ class TestComprehensiveSuite:
         # All properties should at least be unknown (not failed)
         for result in results:
             # Compare enum values properly
-            from src.aiagentsuite.core.formal_verification import VerificationResult
+            from aiagentsuite.core.formal_verification import VerificationResult
             assert result.result in [VerificationResult.PASSED, VerificationResult.UNKNOWN, VerificationResult.ERROR]
 
         # Check verification statistics
@@ -493,7 +495,7 @@ class TestComprehensiveSuite:
         result = await verification_manager.verify_property(security_property)
 
         # Security verification should run without catastrophic failure
-        from src.aiagentsuite.core.formal_verification import VerificationResult
+        from aiagentsuite.core.formal_verification import VerificationResult
         assert result.result in [VerificationResult.PASSED, VerificationResult.UNKNOWN, VerificationResult.FAILED]
 
         # Check that security manager is responsive

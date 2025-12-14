@@ -235,11 +235,11 @@ class TestChaosEvaluator:
         # Mock observability manager
         mock_observability = MagicMock()
         from aiagentsuite.core.observability import SystemMetrics, ApplicationMetrics
-        mock_observability.metrics.collect_system_metrics = MagicMock(return_value=SystemMetrics(
+        mock_observability.metrics.collect_system_metrics = AsyncMock(return_value=SystemMetrics(
             cpu_percent=10.0, memory_percent=50.0, memory_used_gb=4.0, memory_total_gb=8.0,
             disk_usage_percent=30.0, network_bytes_sent=1000, network_bytes_recv=2000
         ))
-        mock_observability.metrics.collect_application_metrics = MagicMock(return_value=ApplicationMetrics(
+        mock_observability.metrics.collect_application_metrics = AsyncMock(return_value=ApplicationMetrics(
             memory_usage_mb=100.0, uptime_seconds=3600.0
         ))
 
@@ -273,11 +273,11 @@ class TestChaosEvaluator:
         # Mock observability
         mock_observability = MagicMock()
         from aiagentsuite.core.observability import SystemMetrics, ApplicationMetrics
-        mock_observability.metrics.collect_system_metrics = MagicMock(return_value=SystemMetrics(
+        mock_observability.metrics.collect_system_metrics = AsyncMock(return_value=SystemMetrics(
             cpu_percent=15.0, memory_percent=55.0, memory_used_gb=4.4, memory_total_gb=8.0,
             disk_usage_percent=65.0, network_bytes_sent=1500, network_bytes_recv=2500
         ))
-        mock_observability.metrics.collect_application_metrics = MagicMock(return_value=ApplicationMetrics(
+        mock_observability.metrics.collect_application_metrics = AsyncMock(return_value=ApplicationMetrics(
             memory_usage_mb=110.0, uptime_seconds=3600.0
         ))
 
@@ -441,11 +441,11 @@ class TestChaosEngineeringManager:
         with patch('aiagentsuite.core.chaos_engineering.get_global_observability_manager') as mock_get_obs:
             mock_obs = MagicMock()
             from aiagentsuite.core.observability import SystemMetrics, ApplicationMetrics
-            mock_obs.metrics.collect_system_metrics = MagicMock(return_value=SystemMetrics(
+            mock_obs.metrics.collect_system_metrics = AsyncMock(return_value=SystemMetrics(
                 cpu_percent=10.0, memory_percent=50.0, memory_used_gb=4.0, memory_total_gb=8.0,
                 disk_usage_percent=60.0, network_bytes_sent=1000, network_bytes_recv=2000
             ))
-            mock_obs.metrics.collect_application_metrics = MagicMock(return_value=ApplicationMetrics(
+            mock_obs.metrics.collect_application_metrics = AsyncMock(return_value=ApplicationMetrics(
                 memory_usage_mb=100.0, uptime_seconds=3600.0
             ))
             mock_obs.record_business_event = AsyncMock()
@@ -713,11 +713,11 @@ class TestIntegration:
         with patch('aiagentsuite.core.chaos_engineering.get_global_observability_manager') as mock_get_obs:
             mock_obs = MagicMock()
             from aiagentsuite.core.observability import SystemMetrics, ApplicationMetrics
-            mock_obs.metrics.collect_system_metrics = MagicMock(return_value=SystemMetrics(
+            mock_obs.metrics.collect_system_metrics = AsyncMock(return_value=SystemMetrics(
                 cpu_percent=10.0, memory_percent=50.0, memory_used_gb=4.0, memory_total_gb=8.0,
                 disk_usage_percent=60.0, network_bytes_sent=1000, network_bytes_recv=2000
             ))
-            mock_obs.metrics.collect_application_metrics = MagicMock(return_value=ApplicationMetrics(
+            mock_obs.metrics.collect_application_metrics = AsyncMock(return_value=ApplicationMetrics(
                 memory_usage_mb=100.0, uptime_seconds=3600.0
             ))
             mock_obs.record_business_event = AsyncMock()

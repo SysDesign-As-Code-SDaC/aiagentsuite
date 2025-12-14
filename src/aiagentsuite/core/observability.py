@@ -677,8 +677,8 @@ class ObservabilityManager:
             while True:
                 try:
                     # Collect metrics
-                    system_metrics = self.metrics.collect_system_metrics()
-                    app_metrics = self.metrics.collect_application_metrics()
+                    system_metrics = await self.metrics.collect_system_metrics()
+                    app_metrics = await self.metrics.collect_application_metrics()
 
                     # Log performance data periodically
                     logger.info("System metrics collected",
