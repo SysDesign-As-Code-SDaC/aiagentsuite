@@ -1,150 +1,127 @@
-# **Project Context - ContextGuard**
+# **Project Context - AiAgentSuite**
 
-*This file provides stable, high-level details of the ContextGuard project to AI agents for necessary domain knowledge.*
+*This file provides stable, high-level details of the AiAgentSuite project to AI agents for necessary domain knowledge.*
 
 ## **1. Primary Business Objective**
 
-**Objective**: ContextGuard is a comprehensive AI context monitoring and security system that tracks, analyzes, and protects AI interactions across multiple platforms. The system provides real-time monitoring, security threat detection, token usage optimization, and bias detection across VS Code extensions, desktop applications, and web services.
+**Objective**: AiAgentSuite is a comprehensive enterprise AI agent framework built to provide robust, secure, and observable agent-based solutions with strong development discipline. It is designed to be integrated into custom development tools, especially those using LSP (Language Server Protocol) or MCP (Model Context Protocol).
+
+The goal of this repository is to allow protocols and other components to be integrated and created. In the future, this will be integrated into a "system design as code" repository.
 
 **Key Features**:
-- Real-time AI context monitoring and analysis
-- Security threat detection and prevention (OWASP compliance)
-- Multi-platform support (VS Code extension, desktop app, web services)
-- Token usage tracking and optimization
-- Bias detection and mitigation
-- Unified service architecture for centralized management
-- Desktop monitoring for local development environments
+- Automate or augment software development processes with AI agents
+- Secure-by-design architecture with built-in audit logging
+- Observability and tracing for all agent actions
+- Extensible protocol system for complex reasoning and tasks
+- Persistent memory context for stateful agents
+- LSP and MCP integration for IDEs and development tools
+- Strong development discipline via Vibe-Driven Engineering (VDE)
 
 ## **2. Core Technologies**
 
 **Primary Languages**: 
-- Python (backend services, desktop app, core library)
-- TypeScript (VS Code extension, web interfaces)
-- JavaScript (legacy components, build scripts)
+- Python (core framework, protocols, memory bank)
+- TypeScript (LSP extension, MCP integration)
 
 **Frontend Framework**: 
-- VS Code Extension API with TypeScript
-- Desktop App using Python Tkinter
-- Web interfaces (if applicable)
+- VS Code Extension API (via TypeScript LSP)
+- MCP Client interfaces
 
 **Backend Framework**: 
-- Python FastAPI for REST APIs
-- Flask for legacy services
-- Unified service architecture
+- Python core libraries (pydantic, opentelemetry, etc.)
+- MCP Server implementation
 
 **Database(s)**: 
-- SQLite for local/development storage
-- PostgreSQL for production deployments
-- In-memory caching for real-time operations
+- File-based persistence for Memory Bank (markdown/json)
+- Redis (optional, for caching/distributed state)
 
 **Key Libraries/SDKs**: 
-- **Python**: FastAPI, SQLAlchemy, Pydantic, PyInstaller, pytest
-- **TypeScript**: VS Code API, Tree-sitter (AST parsing), Jest
-- **Security**: OWASP guidelines, input validation libraries
-- **Build**: PyInstaller for executables, Webpack for extension
+- **Python**: Pydantic, OpenTelemetry, PyTest, Rich
+- **TypeScript**: VS Code Language Server, MCP SDK
+- **Security**: OWASP guidelines
+- **Build**: Setuptools, npm
 
 ## **3. Architectural Style**
 
-**Style**: Microservices with unified service architecture
+**Style**: Modular Framework with Protocol-Driven Architecture
 
 **High-Level Description**: 
-ContextGuard uses a modular microservices architecture where each component can run independently or as part of a unified service:
+AiAgentSuite uses a modular architecture where core services, protocols, and integration adapters are isolated:
 
-- **Core Library** (`src/contextguard/`): Shared Python library with core functionality
-- **Desktop App** (`src/desktop_app/`): Local monitoring application for development environments
-- **VS Code Extension** (`contextguard-preview/`): IDE integration for real-time monitoring
-- **Unified Service** (`src/unified_service/`): Centralized service combining all components
-- **Web Services**: REST APIs for centralized management and monitoring
-
-The architecture supports both distributed and unified deployment models, allowing flexibility for different use cases.
+- **Core**: Security, observability, config, caching, error handling
+- **Protocols**: DSL engine for agent reasoning and communication
+- **Framework**: Organization, onboarding, testing, and philosophy
+- **Memory Bank**: Persistent context management
+- **LSP & MCP**: Integration adapters for external tools
 
 ## **4. Coding Standards & Conventions**
 
 **Code Style**: 
-- **Python**: PEP 8 compliance, Black formatter, type hints required for all functions
-- **TypeScript**: ESLint configuration, Prettier formatting, strict mode enabled
-- **JavaScript**: ESLint with consistent formatting rules
+- **Python**: PEP 8 compliance, Black formatter, type hints required
+- **TypeScript**: ESLint, Prettier, strict mode
 
 **Testing Framework**: 
 - **Python**: pytest with comprehensive coverage requirements (>80%)
-- **TypeScript**: Jest for unit and integration tests
-- **Integration**: End-to-end testing for cross-platform functionality
+- **TypeScript**: Jest/Mocha for LSP/MCP tests
 
 **Key Conventions**: 
-- All functions must have comprehensive docstrings (Python) or TSDoc (TypeScript)
-- Security-first approach: all user inputs must be validated and sanitized
-- Comprehensive error handling with structured logging
-- Conventional commits for all changes (feat, fix, docs, etc.)
-- No sensitive data in logs, error messages, or configuration files
-- Regular dependency updates and security patches
+- Follow "Secure Code Implementation" protocol
+- Trunk-based branching model
+- All code PR-reviewed with automated checks
+- Documentation updated with code changes
 
 ## **5. Directory Structure Pointers**
 
 **Core Components**:
-- `src/contextguard/`: Core Python library with shared functionality
-- `src/desktop_app/`: Desktop monitoring application
-- `src/unified_service/`: Unified service implementation
-- `contextguard-preview/`: VS Code extension source code
+- `src/aiagentsuite/core/`: Core enterprise components
+- `src/aiagentsuite/protocols/`: Protocol engine and definitions
+- `src/aiagentsuite/memory_bank/`: Persistent context management
+- `src/aiagentsuite/framework/`: Framework logic and data
 
-**Configuration & Build**:
-- `config/`: Configuration files for different deployment modes
-- `build/`: PyInstaller build artifacts
-- `dist/`: Final executable distributions
-
-**Testing & Quality**:
-- `tests/`: Comprehensive test suite covering all components
-- `contextguard-preview/tests/`: Extension-specific tests
-- `contextguard-preview/coverage/`: Test coverage reports
+**Integration**:
+- `src/aiagentsuite/lsp/`: Python-side LSP extensions
+- `src/aiagentsuite/mcp/`: Python-side MCP server
+- `typescript/`: TypeScript implementation for LSP/MCP
 
 **Documentation**:
 - `README.md`: Main project documentation
-- `BUILD_INSTRUCTIONS.md`: Build and deployment instructions
-- `IMPLEMENTATION_SUMMARY.md`: Technical implementation details
+- `src/aiagentsuite/framework/data/`: Detailed framework docs
 
 ## **6. Security Requirements**
 
 **Critical Security Considerations**:
-- All AI interaction data must be handled securely
-- No sensitive information in logs or error messages
-- Secure token storage and transmission
-- Input validation for all external data sources
-- Regular security audits and vulnerability assessments
-- OWASP Top 10 compliance for all web interfaces
+- Input validation and sanitization
+- Secure-by-default coding practices
+- Automated security checks in CI/CD
+- Audit logging for all sensitive operations
 
 ## **7. Performance Requirements**
 
 **Performance Targets**:
-- Real-time monitoring with <100ms latency
-- Efficient token usage tracking without performance impact
-- Scalable architecture supporting multiple concurrent users
-- Resource optimization for desktop applications
-- Minimal memory footprint for VS Code extension
+- Low latency for protocol execution
+- Efficient memory usage for long-running agents
+- Scalable observability without significant overhead
 
 ## **8. Deployment Models**
 
 **Supported Deployment Options**:
-- **Local Development**: Desktop app for individual developers
-- **Team Environment**: Unified service for team-wide monitoring
-- **Enterprise**: Centralized web services with database backend
-- **Portable**: Standalone executables for offline use
+- Library import into Python applications
+- Standalone MCP server
+- VS Code Extension (via TypeScript integration)
 
 ## **9. Integration Points**
 
 **External Integrations**:
-- VS Code Extension API for IDE integration
-- AI service APIs for context analysis
-- Database connections for persistent storage
-- Web APIs for centralized management
-- File system monitoring for local development
+- IDEs (VS Code, Cursor) via LSP/MCP
+- Automation pipelines (CI/CD)
+- "System design as code" repositories (future)
 
 ## **10. Development Workflow**
 
 **Development Process**:
-- Feature branches for all development work
-- Pull request reviews required for all changes
-- Automated testing on all commits
-- Security review for sensitive changes
-- Documentation updates for all new features
-- Regular dependency updates and security patches
+- Follow VDE (Vibe-Driven Engineering) principles
+- Use protocols for complex tasks (e.g., Feature Development, Security Audit)
+- Update Memory Bank with decisions and progress
+- Verify changes with comprehensive tests
 
-This context provides the foundation for AI agents to understand the ContextGuard project's architecture, requirements, and development standards when working on any component of the system.
+This context provides the foundation for AI agents to understand the AiAgentSuite project's architecture, requirements, and development standards.

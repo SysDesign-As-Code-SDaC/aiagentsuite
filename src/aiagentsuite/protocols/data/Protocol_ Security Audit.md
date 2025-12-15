@@ -1,17 +1,18 @@
-# **Protocol: ContextGuard Security Audit**
+# **Protocol: Security Audit**
 
-**Objective**: To conduct a comprehensive security audit of ContextGuard components, identifying vulnerabilities and implementing appropriate mitigations to ensure the system meets enterprise security standards.
+**Objective**: To conduct a comprehensive security audit of AiAgentSuite components, identifying vulnerabilities and implementing appropriate mitigations to ensure the system meets enterprise security standards.
 
 ## **Phase 1: Security Scope Definition**
 
 ### 1.1 Audit Scope
 1. **Acknowledge Task**: Confirm understanding of the security audit requirements
 2. **Define Scope**: Identify components to be audited:
-   - Core library (`src/contextguard/`)
-   - Desktop application (`src/desktop_app/`)
-   - VS Code extension (`contextguard-preview/`)
-   - Unified service (`src/unified_service/`)
-   - Configuration files (`config/`)
+   - Core library (`src/aiagentsuite/core/`)
+   - Protocol engine (`src/aiagentsuite/protocols/`)
+   - Framework components (`src/aiagentsuite/framework/`)
+   - Memory Bank (`src/aiagentsuite/memory_bank/`)
+   - LSP/MCP integrations (`src/aiagentsuite/lsp/`, `src/aiagentsuite/mcp/`)
+   - Configuration files
    - Build and deployment scripts
 
 ### 1.2 Threat Model
@@ -20,11 +21,11 @@
    - User authentication tokens
    - Configuration and secrets
    - Log files and monitoring data
-   - Cross-platform communication channels
+   - Agent state and memory
 
 2. **Identify Threats**: List potential threat actors and attack vectors:
-   - Malicious users attempting to access AI context
-   - Cross-platform data exfiltration
+   - Malicious users attempting to access agent context
+   - Data exfiltration
    - Token theft and misuse
    - Configuration tampering
    - Log injection and data leakage
@@ -38,22 +39,21 @@
 4. **XML External Entities (XXE)**: Check XML processing components
 5. **Broken Access Control**: Review authorization and access control mechanisms
 6. **Security Misconfiguration**: Audit default configurations and security settings
-7. **Cross-Site Scripting (XSS)**: Check web interfaces and user input handling
+7. **Cross-Site Scripting (XSS)**: Check web interfaces and user input handling (where applicable)
 8. **Insecure Deserialization**: Review serialization/deserialization processes
 9. **Known Vulnerabilities**: Check for outdated dependencies with known CVEs
 10. **Insufficient Logging & Monitoring**: Audit logging practices and monitoring coverage
 
-### 2.2 ContextGuard-Specific Security Checks
-1. **AI Context Protection**: Verify secure handling of AI interaction data
+### 2.2 Framework-Specific Security Checks
+1. **Agent Context Protection**: Verify secure handling of agent interaction data
 2. **Token Security**: Check secure storage and transmission of authentication tokens
-3. **Cross-Platform Security**: Audit data flow between desktop, extension, and web components
-4. **Real-time Monitoring Security**: Check security of continuous monitoring operations
+3. **Protocol Security**: Audit protocol execution and input handling
+4. **Monitoring Security**: Check security of observability/tracing data
 5. **Configuration Security**: Audit configuration file handling and validation
-6. **Build Security**: Check security of build processes and executable generation
 
 ### 2.3 Input Validation Audit
 1. **User Input**: Check all user input validation and sanitization
-2. **API Input**: Audit API endpoint input validation
+2. **Protocol Input**: Audit protocol parameter validation
 3. **File Input**: Check file upload and processing security
 4. **Configuration Input**: Audit configuration file validation
 5. **Network Input**: Check network communication validation
@@ -99,10 +99,9 @@
 
 ### 4.1 Comprehensive Security Review
 1. **OWASP Compliance**: Verify compliance with OWASP Top 10
-2. **ContextGuard Security**: Verify ContextGuard-specific security requirements
-3. **Cross-Platform Security**: Check security across all platforms
-4. **Real-time Security**: Verify security of continuous monitoring
-5. **Build Security**: Check security of build and deployment processes
+2. **Framework Security**: Verify framework-specific security requirements
+3. **Protocol Security**: Check security of protocol execution
+4. **Build Security**: Check security of build and deployment processes
 
 ### 4.2 Security Test Execution
 1. **Automated Security Tests**: Run all generated security tests
@@ -141,25 +140,18 @@
 4. **Security Documentation**: All security documentation and procedures
 5. **Security Monitoring**: Security monitoring and alerting configuration
 
-## **ContextGuard-Specific Security Considerations**
+## **Framework-Specific Security Considerations**
 
-### AI Context Security
-- Ensure AI interaction data is encrypted at rest and in transit
-- Implement proper access controls for AI context data
-- Regular security audits of AI data handling processes
-- Secure deletion of sensitive AI context data
+### Agent Context Security
+- Ensure agent interaction data is encrypted at rest and in transit
+- Implement proper access controls for context data
+- Regular security audits of data handling processes
+- Secure deletion of sensitive context data
 
-### Cross-Platform Security
-- Secure communication between desktop app, VS Code extension, and web services
-- Proper isolation of data between different platforms
-- Secure handling of shared configuration and secrets
-- Protection against cross-platform data exfiltration
-
-### Real-time Monitoring Security
-- Secure handling of continuous monitoring data
-- Protection against monitoring data tampering
-- Secure storage of monitoring logs and metrics
-- Proper access controls for monitoring data
+### Protocol Security
+- Validate all inputs to protocols
+- Ensure protocols cannot execute arbitrary code outside of defined boundaries
+- Monitor protocol execution for anomalies
 
 ### Token and Authentication Security
 - Secure storage of authentication tokens
@@ -170,7 +162,7 @@
 ### Build and Deployment Security
 - Secure build processes and artifact generation
 - Protection against supply chain attacks
-- Secure distribution of executables and packages
+- Secure distribution of packages
 - Regular security updates and patches
 
-This protocol ensures that ContextGuard maintains the highest security standards while protecting sensitive AI context data and maintaining secure cross-platform operations.
+This protocol ensures that AiAgentSuite maintains the highest security standards while protecting sensitive agent context data.

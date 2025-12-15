@@ -18,7 +18,7 @@ This guide provides comprehensive instructions for deploying the AI Agent Suite 
 │   LSP Service   │    │  Protocol Engine │    │  MCP Servers   │
 │                 │    │                  │    │                 │
 │ • Code Analysis │    │ • DSL Execution  │    │ • Tool Services│
-│ • Completions   │    │ • ContextGuard   │    │ • Resources     │
+│ • Completions   │    │ • Security Audit │    │ • Resources     │
 │ • Diagnostics   │    │ • Event Sourcing │    │ • Capabilities  │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
           │                       │                       │

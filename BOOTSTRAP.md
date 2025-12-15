@@ -52,7 +52,7 @@ The AI Agent Suite provides enterprise-grade components:
 - **Event Sourcing & CQRS** - Domain-driven design with complete audit trails
 - **Chaos Engineering** - Systematic resilience testing and failure injection
 - **Formal Verification** - Mathematical proofs and property verification
-- **Protocol Execution** - ContextGuard security protocols and DSL
+- **Protocol Execution** - Security protocols and DSL
 
 ### 🔐 Security & Observability
 - **Multi-layered Security** - Encryption, authorization, audit logging
@@ -320,7 +320,7 @@ AI Agent Suite
 │   ├── Cache Manager
 │   └── Error Handler
 ├── Protocol Engine
-│   └── ContextGuard Protocols
+│   └── Core Protocols
 ├── AI Integration
 │   ├── LSP Server
 │   ├── MCP Server
