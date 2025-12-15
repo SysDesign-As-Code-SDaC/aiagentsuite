@@ -2,6 +2,8 @@
 
 A comprehensive, enterprise-grade framework for AI-assisted development with Vibe-Driven Engineering (VDE) methodology. Features production-ready components including LSP/MCP integration, security, observability, caching, and comprehensive error handling.
 
+The goal of this repository is to allow protocols and other components to be integrated and created. In the future, this will be integrated into a "system design as code" repository.
+
 **Status**: ✅ Production Ready | **Coverage**: 95%+ | **Tests**: 150+ | **Architecture**: Enterprise-grade
 
 ## 🏗️ Project Structure
@@ -225,9 +227,9 @@ GitHub Actions provides:
 
 ### Available Protocols
 - **Secure Code Implementation**: 4-phase security-focused development
-- **ContextGuard Feature Development**: Complete feature lifecycle
-- **ContextGuard Security Audit**: OWASP-compliant security reviews
-- **ContextGuard Testing Strategy**: Comprehensive testing approach
+- **Feature Development**: Complete feature lifecycle
+- **Security Audit**: OWASP-compliant security reviews
+- **Testing Strategy**: Comprehensive testing approach
 
 ### Memory Bank Contexts
 - **Active**: Current goals and blockers
@@ -268,24 +270,24 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Development Workflows
 
 ### Feature Development
-1. Use `Protocol_ ContextGuard Feature Development.md` for new features
+1. Use `Protocol_ Feature Development.md` for new features
 2. Follow the 5-phase approach: Analysis → Planning → Implementation → Verification → Delivery
 3. Ensure cross-platform compatibility and security considerations
 4. Include comprehensive testing and documentation
 
 ### Security Audits
-1. Use `Protocol_ ContextGuard Security Audit.md` for security reviews
+1. Use `Protocol_ Security Audit.md` for security reviews
 2. Follow OWASP Top 10 guidelines
-3. Include ContextGuard-specific security considerations
+3. Include security considerations
 4. Implement comprehensive security testing
 
 ### Testing Implementation
-1. Use `Protocol_ ContextGuard Testing Strategy.md` for test development
+1. Use `Protocol_ Testing Strategy.md` for test development
 2. Achieve minimum 80% code coverage
 3. Include security, performance, and integration tests
 4. Maintain cross-platform test compatibility
 
-## ContextGuard-Specific Considerations
+## Framework Considerations
 
 ### Multi-Platform Development
 - Desktop application (Python/Tkinter)
@@ -342,7 +344,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Getting Started
 
 1. **Review Framework**: Read through all framework documents
-2. **Understand Context**: Review Project Context.md for ContextGuard specifics
+2. **Understand Context**: Review Project Context.md for framework specifics
 3. **Choose Protocol**: Select appropriate protocol for your task
 4. **Execute**: Follow protocol steps precisely
 5. **Verify**: Ensure all quality and security requirements are met
@@ -351,7 +353,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - **Framework Documentation**: All documents in this directory
 - **VDE Methodology**: Core principles and philosophy
-- **ContextGuard Documentation**: Project-specific README files
 - **Protocol Examples**: Detailed step-by-step procedures
 
-This integration ensures that ContextGuard development maintains the highest standards of quality, security, and maintainability while leveraging AI assistance effectively and safely.
+This integration ensures that development maintains the highest standards of quality, security, and maintainability while leveraging AI assistance effectively and safely.

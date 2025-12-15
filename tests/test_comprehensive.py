@@ -229,7 +229,7 @@ class TestComprehensiveSuite:
             print(f"🔍 DEBUG: Found protocols: {protocols}")
             print(f"🔍 DEBUG: Number of protocols: {len(protocols)}")
             assert isinstance(protocols, dict)
-            assert len(protocols) >= 4  # At least our 4 ContextGuard protocols
+            assert len(protocols) >= 4  # At least our 4 core protocols
 
             # Test protocol execution
             test_protocol = "Secure Code Implementation"

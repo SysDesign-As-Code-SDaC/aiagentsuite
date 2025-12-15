@@ -359,10 +359,14 @@ class ProtocolExecutor:
 
     async def _load_protocols(self) -> None:
         """Load all available protocols."""
-        protocols_dir = self.workspace_path / "protocols"
+        protocols_dir = self.workspace_path / "protocols" / "data"
         if not protocols_dir.exists():
-            # Fallback to workspace root
-            protocols_dir = self.workspace_path
+            # Try src path
+            protocols_dir = self.workspace_path / "src" / "aiagentsuite" / "protocols" / "data"
+
+        if not protocols_dir.exists():
+             # Fallback to workspace root
+             protocols_dir = self.workspace_path
 
         protocol_files = list(protocols_dir.glob("Protocol_*.md"))
         protocol_files.extend(self.workspace_path.glob("Protocol_*.md"))

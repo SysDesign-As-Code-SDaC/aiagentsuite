@@ -221,7 +221,7 @@ async def mock_lsp_context():
 
     # Mock protocol executor list_protocols method
     protocol_executor.list_protocols.return_value = {
-        "ContextGuard": {"description": "Security protocol"},
+        "Security Audit": {"description": "Security protocol"},
         "CodeReview": {"description": "Review protocol"}
     }
 
@@ -283,7 +283,7 @@ class TestCompletionProvider:
 
         # Should include protocol-specific completions
         labels = [c.label for c in completions]
-        assert "executeProtocol('ContextGuard')" in labels
+        assert "executeProtocol('Security Audit')" in labels
         assert "executeProtocol('CodeReview')" in labels
 
     @pytest.mark.asyncio
@@ -507,7 +507,7 @@ class TestCodeActionProvider:
 
         # Should include protocol execution actions
         protocol_actions = [a for a in actions if "Execute Protocol:" in a.title]
-        assert len(protocol_actions) == 2  # ContextGuard and CodeReview
+        assert len(protocol_actions) == 2  # Security Audit and CodeReview
 
         # Check action structure
         for action in protocol_actions:

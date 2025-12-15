@@ -121,9 +121,9 @@ class AIAgentSuiteMCPServer {
     // Placeholder - would scan protocols directory
     const protocols = [
       'Secure Code Implementation',
-      'ContextGuard Feature Development',
-      'ContextGuard Security Audit',
-      'ContextGuard Testing Strategy'
+      'Feature Development',
+      'Security Audit',
+      'Testing Strategy'
     ];
 
     return {
