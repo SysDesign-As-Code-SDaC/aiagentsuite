@@ -587,6 +587,17 @@ class ObservabilityManager:
             except asyncio.CancelledError:
                 pass
 
+        # Shutdown tracing provider
+        provider = trace.get_tracer_provider()
+        if hasattr(provider, "shutdown"):
+            # If it's the SDK TracerProvider, it has a shutdown method
+            # We use invoke it directly if it's synchronous, or wrap it if needed.
+            # The SDK's shutdown is typically synchronous but might flush buffers.
+            try:
+                provider.shutdown()
+            except Exception as e:
+                logger.error(f"Error shutting down tracer provider: {e}")
+
     def _get_sentry_dsn(self) -> Optional[str]:
         """Get Sentry DSN from environment configuration."""
         # Placeholder - would read from environment
