@@ -13,25 +13,14 @@ from datetime import datetime
 from dataclasses import dataclass, field
 from enum import Enum
 
+from ..interfaces import (
+    IProtocolExecutor,
+    IProtocolPhase,
+    ProtocolExecutionStatus,
+    ProtocolPhaseStatus
+)
+
 logger = logging.getLogger(__name__)
-
-
-class ProtocolExecutionStatus(Enum):
-    """Status of protocol execution."""
-    PENDING = "pending"
-    RUNNING = "running"
-    COMPLETED = "completed"
-    FAILED = "failed"
-    CANCELLED = "cancelled"
-
-
-class ProtocolPhaseStatus(Enum):
-    """Status of individual protocol phases."""
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    SKIPPED = "skipped"
-    FAILED = "failed"
 
 
 @dataclass
@@ -53,7 +42,7 @@ class ProtocolExecutionContext:
         return (datetime.now() - self.start_time).total_seconds()
 
 
-class ProtocolPhase:
+class ProtocolPhase(IProtocolPhase):
     """Represents a single protocol phase with execution capabilities."""
 
     def __init__(self, number: int, title: str, content: str, executor: 'ProtocolExecutor'):
@@ -339,7 +328,7 @@ class ProtocolDSLInterpreter:
             return {"command": cmd_name, "result": "Unknown command", "status": "skipped"}
 
 
-class ProtocolExecutor:
+class ProtocolExecutor(IProtocolExecutor):
     """
     Executes framework protocols and manages protocol lifecycle.
     Now includes full DSL interpretation and phase execution capabilities.
@@ -369,6 +358,12 @@ class ProtocolExecutor:
              protocols_dir = self.workspace_path
 
         protocol_files = list(protocols_dir.glob("Protocol_*.md"))
+
+        # Also check for protocols directory in workspace if it exists
+        workspace_protocols = self.workspace_path / "protocols"
+        if workspace_protocols.exists():
+             protocol_files.extend(workspace_protocols.glob("Protocol_*.md"))
+
         protocol_files.extend(self.workspace_path.glob("Protocol_*.md"))
 
         for protocol_file in protocol_files:
