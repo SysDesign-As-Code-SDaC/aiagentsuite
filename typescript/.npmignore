@@ -1,0 +1,25 @@
+# Ignore test files
+tests/
+test/
+**/*.test.ts
+**/*.spec.ts
+
+# Ignore source files if you are only publishing dist/
+# src/
+# tsconfig.json
+
+# Ignore build artifacts (usually handled by package.json files array, but good practice)
+node_modules/
+.nyc_output/
+coverage/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db

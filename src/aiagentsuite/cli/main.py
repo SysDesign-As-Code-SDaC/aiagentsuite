@@ -180,5 +180,21 @@ def log_decision(ctx, decision: str, rationale: str, context: str) -> None:
     asyncio.run(_log_decision())
 
 
+@main.command()
+@click.pass_context
+def tui(ctx) -> None:
+    """Launch the Interactive TUI Dashboard"""
+    workspace_path = ctx.obj['workspace']
+
+    # Import here to avoid hard dependency if textual is missing (though we added it)
+    try:
+        from ..tui.app import AgentSuiteApp
+        app = AgentSuiteApp(workspace_path)
+        app.run()
+    except ImportError as e:
+        console.print(f"[red]Error:[/red] Could not import TUI. {e}")
+        console.print("Please install textual: pip install textual")
+
+
 if __name__ == '__main__':
     main()

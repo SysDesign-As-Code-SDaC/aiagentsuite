@@ -28,6 +28,7 @@ dependencies = [
     "pydantic-settings>=2.1.0",
     "click>=8.0.0",
     "rich>=13.0.0",
+    "textual>=0.41.0",
     "pyyaml>=6.0",
     "jinja2>=3.0.0",
     "python-dotenv>=1.0.0",
