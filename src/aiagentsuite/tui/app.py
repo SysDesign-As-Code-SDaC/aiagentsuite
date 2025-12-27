@@ -126,8 +126,6 @@ class MemoryView(Static):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         context_type = event.button.id.replace("mem-", "")
-        if context_type == "active":
-            context_type = "active" # map to valid type if needed
         self.load_memory(context_type)
 
     @work
