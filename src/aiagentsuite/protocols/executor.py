@@ -357,14 +357,14 @@ class ProtocolExecutor(IProtocolExecutor):
              # Fallback to workspace root
              protocols_dir = self.workspace_path
 
-        protocol_files = list(protocols_dir.glob("Protocol_*.md"))
+        protocol_files = set(protocols_dir.glob("Protocol_*.md"))
 
         # Also check for protocols directory in workspace if it exists
         workspace_protocols = self.workspace_path / "protocols"
         if workspace_protocols.exists():
-             protocol_files.extend(workspace_protocols.glob("Protocol_*.md"))
+             protocol_files.update(workspace_protocols.glob("Protocol_*.md"))
 
-        protocol_files.extend(self.workspace_path.glob("Protocol_*.md"))
+        protocol_files.update(self.workspace_path.glob("Protocol_*.md"))
 
         for protocol_file in protocol_files:
             protocol_name = self._extract_protocol_name(protocol_file.name)
